@@ -4,13 +4,14 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import SecretButton from "./SecretButton.jsx";
 const Table = () => {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage] = useState(10);
-
-    const [employeeDropdownStates, setEmployeeDropdownStates] = useState({}); // Info drop-down toggle state
+    const [filter, filterOn] = useState(false);
+    const [filteredData, setFilteredData] = useState([]);
+    const [employeeDropdownStates, setEmployeeDropdownStates] = useState({});
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [employeeFormSubmitted, setEmployeeFormSubmitted] = useState({});
     const [employeeDropdownOpen, setEmployeeDropdownOpen] = useState({});
@@ -24,7 +25,6 @@ const Table = () => {
     let month = ("0" + (date.getMonth() + 1)).slice(-2);
     let day = ("0" + date.getDate()).slice(-2);
     const currentDate = date.getFullYear().toString() + '-' + month + '-' + day;
-
     const getTableFunc = () => {
         fetch("/api/table")
             .then(response => response.json())
@@ -45,20 +45,15 @@ const Table = () => {
                 setEmployeeDropdownOpen(initialEmployeeDropdownOpen)
             });
     }
-
     useEffect(getTableFunc, []);
-
     const lastRowIndex = currentPage * rowsPerPage;
     const firstRowIndex = lastRowIndex - rowsPerPage;
     const currentData = data.slice(firstRowIndex, lastRowIndex);
-
     const totalPages = Math.ceil(data.length / rowsPerPage);
-
     const formatDate = (databaseDate) => {
         const date = new Date(databaseDate);
         return date.toISOString().split('T')[0];
     };
-
     const toggleDropdown = (employeeId) => {
         setEmployeeDropdownOpen(prevState => ({
             ...prevState,
@@ -78,11 +73,6 @@ const Table = () => {
                 ...prevEmployeeFormSubmitted,
                 [employeeId]: true,
             }));
-
-            // Calculate the scheduled time based on form input
-            const scheduledTime = `${formData.obTime} on ${formData.end_date}`;
-            setScheduledTime(employeeId, scheduledTime);
-
             const res = await fetch(`/api/delete/${employeeId}`, {
                 method: 'DELETE',
                 headers: {
@@ -96,22 +86,12 @@ const Table = () => {
             });
             console.log('true')
             setFormSubmitted(true);
-            // Rerender the table
+            //rerenders table
             getTableFunc();
         } catch (err) {
             console.log('error deleting employee');
         }
     }
-
-    const setScheduledTime = (employeeId, scheduledTime) => {
-        setData(prevData => prevData.map(employee => {
-            if (employee.employee_id === employeeId) {
-                return { ...employee, scheduledTime };
-            }
-            return employee;
-        }));
-    };
-
     const handleFormChange = (e) => {
         e.preventDefault();
         setFormData({
@@ -122,12 +102,10 @@ const Table = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
     }
-
     const nameFilter = async () => {
         try {
             const res = await fetch('/api/filterFirstName')
                 .then(res => res.json());
-
             setFilteredData(res);
         } catch (err) {
             console.log('error filter by first name', err);
@@ -145,63 +123,116 @@ const Table = () => {
                 <SecretButton />
             </div>
             <div className="tableBody">
-    {currentData.map((employee) => (
-    <Accordion key={employee.employee_id}>
-        <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header">
-        <Typography className="Typography">
-            <span className="employeeInfo">{employee.first_name}</span>
-            <span className="employeeInfo">{employee.last_name}</span>
-            <span className="employeeInfo">{employee.department}</span>
-            <span className="employeeInfo">{employee.role}</span>
-            <span className="employeeInfo">{formatDate(employee.start_date)}</span>
-            <span className="employeeInfo">{employee.type}</span>
-        </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-        <Typography>
-            <div className="employeeDetail">Salary: {employee.salary}</div>
-            <div className="employeeDetail">Birthday: {formatDate(employee.birthday)}</div>
-            <div className="employeeDetail">Email: {employee.email}</div>
-            <div className="employeeDetail">Phone Number: {employee.phone_number}</div>
-            <br />
-            <div className="flex-center">
-            {employeeFormSubmitted[employee.employee_id] ? (<div className="Button">Employee offboard scheduled for {employee.scheduledTime}</div>) : (
-                <div className="dropdown">
-                    <button onClick={() => toggleDropdown(employee.employee_id)}>
-                        {employeeDropdownOpen[employee.employee_id] ? "Go Back" : "Offboard"}
-                    </button>
-                                {employeeDropdownOpen[employee.employee_id] && (
-                            <div className="dropdown-content">
-                            <form onSubmit={handleSubmit}>
-                                <ul>
-                                    <li>
-                                        <label htmlFor="end_date">Offboard Date </label>
-                                        <input type="date" id="end" name="end_date" min={currentDate} value={formData.end_date} onChange={handleFormChange} />
-                                    </li>
-                                    <li>
-                                        <label htmlFor="end_time">Offboard Time </label>
-                                        <input type="time" id="obTime" name="obTime" min="06:00" max="24:00" required value={formData.obTime} onChange={handleFormChange} />
-                                    </li>
-                                    <li>
-                                        <button type="submit" onClick={() => clickHandle(employee.employee_id)}>Confirm Offboarding</button>
-                                    </li>
-                                </ul>
-                            </form>
-                        </div>
-                        )}
-                    {employeeDropdownOpen[employee.employee_id] ? null: <button className="Button">Edit Info</button>}
-                </div>
-                )}
-        </div>
-        </Typography>
-        </AccordionDetails>
-    </Accordion>
-    ))}
-</div>
-
+                {filteredData.length > 0 ? filteredData.map((employee) => (
+                    <Accordion key={employee.employee_id}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header">
+                            <Typography className="Typography">
+                                <span className="employeeInfo">{employee.first_name}</span>
+                                <span className="employeeInfo">{employee.last_name}</span>
+                                <span className="employeeInfo">{employee.department}</span>
+                                <span className="employeeInfo">{employee.role}</span>
+                                <span className="employeeInfo">{formatDate(employee.start_date)}</span>
+                                <span className="employeeInfo">{employee.type}</span>
+                            </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography>
+                                <div className="employeeDetail">Salary: {employee.salary}</div>
+                                <div className="employeeDetail">Birthday:{formatDate(employee.birthday)}</div>
+                                <div className="employeeDetail">Email: {employee.email}</div>
+                                <div className="employeeDetail">Phone Number: {employee.phone_number}</div>
+                                <br />
+                                <div className="flex-center">
+                                    {employeeFormSubmitted[employee.employee_id] ? (<div className="Button">Employee offboard scheduled</div>) : (
+                                        <div className="dropdown">
+                                            <button onClick={() => toggleDropdown(employee.employee_id)}>
+                                                {employeeDropdownOpen[employee.employee_id] ? "Go Back" : "Offboard"}
+                                            </button>
+                                            {employeeDropdownOpen[employee.employee_id] && (
+                                                <div className="dropdown-content">
+                                                    <form onSubmit={handleSubmit}>
+                                                        <ul>
+                                                            <li>
+                                                                <label htmlFor="end_date">Offboard Date </label>
+                                                                <input type="date" id="end" name="end_date" min={currentDate} value={formData.end_date} onChange={handleFormChange} />
+                                                            </li>
+                                                            <li>
+                                                                <label htmlFor="end_time">Offboard Time </label>
+                                                                <input type="time" id="obTime" name="obTime" min="06:00" max="24:00" required value={formData.obTime} onChange={handleFormChange} />
+                                                            </li>
+                                                            <li>
+                                                                <button type="submit" onClick={() => clickHandle(employee.employee_id)}>Confirm Offboarding</button>
+                                                            </li>
+                                                        </ul>
+                                                    </form>
+                                                </div>
+                                            )}
+                                            {employeeDropdownOpen[employee.employee_id] ? null : <button className="Button">Edit Info</button>}
+                                        </div>
+                                    )}
+                                </div>
+                            </Typography>
+                        </AccordionDetails>
+                    </Accordion>
+                )) : currentData.map((employee) => (
+                    <Accordion key={employee.employee_id}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header">
+                            <Typography className="Typography">
+                                <span className="employeeInfo">{employee.first_name}</span>
+                                <span className="employeeInfo">{employee.last_name}</span>
+                                <span className="employeeInfo">{employee.department}</span>
+                                <span className="employeeInfo">{employee.role}</span>
+                                <span className="employeeInfo">{formatDate(employee.start_date)}</span>
+                                <span className="employeeInfo">{employee.type}</span>
+                            </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography>
+                                <div className="employeeDetail">Salary: {employee.salary}</div>
+                                <div className="employeeDetail">Birthday:{formatDate(employee.birthday)}</div>
+                                <div className="employeeDetail">Email: {employee.email}</div>
+                                <div className="employeeDetail">Phone Number: {employee.phone_number}</div>
+                                <br />
+                                <div className="flex-center">
+                                    {employeeFormSubmitted[employee.employee_id] ? (<div className="Button">Employee offboard scheduled</div>) : (
+                                        <div className="dropdown">
+                                            <button onClick={() => toggleDropdown(employee.employee_id)}>
+                                                {employeeDropdownOpen[employee.employee_id] ? "Go Back" : "Offboard"}
+                                            </button>
+                                            {employeeDropdownOpen[employee.employee_id] && (
+                                                <div className="dropdown-content">
+                                                    <form onSubmit={handleSubmit}>
+                                                        <ul>
+                                                            <li>
+                                                                <label htmlFor="end_date">Offboard Date </label>
+                                                                <input type="date" id="end" name="end_date" min={currentDate} value={formData.end_date} onChange={handleFormChange} />
+                                                            </li>
+                                                            <li>
+                                                                <label htmlFor="end_time">Offboard Time </label>
+                                                                <input type="time" id="obTime" name="obTime" min="06:00" max="24:00" required value={formData.obTime} onChange={handleFormChange} />
+                                                            </li>
+                                                            <li>
+                                                                <button type="submit" onClick={() => clickHandle(employee.employee_id)}>Confirm Offboarding</button>
+                                                            </li>
+                                                        </ul>
+                                                    </form>
+                                                </div>
+                                            )}
+                                            {employeeDropdownOpen[employee.employee_id] ? null : <button className="Button">Edit Info</button>}
+                                        </div>
+                                    )}
+                                </div>
+                            </Typography>
+                        </AccordionDetails>
+                    </Accordion>
+                ))}
+            </div>
             <br></br>
             <div className="flex-center">
                 <button className="button-style"
@@ -218,5 +249,4 @@ const Table = () => {
         </div>
     );
 }
-
 export default Table;
