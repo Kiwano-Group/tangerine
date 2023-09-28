@@ -4,12 +4,12 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Style from "/client/style.css"
 
 const Table = () => {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage] = useState(10);
+
     const [employeeDropdownStates, setEmployeeDropdownStates] = useState({}); // Info drop-down toggle state
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [employeeFormSubmitted, setEmployeeFormSubmitted] = useState({});
@@ -82,7 +82,12 @@ const Table = () => {
             setEmployeeFormSubmitted(prevEmployeeFormSubmitted => ({
                 ...prevEmployeeFormSubmitted,
                 [employeeId]: true,
-              }));
+            }));
+
+            // Calculate the scheduled time based on form input
+            const scheduledTime = `${formData.obTime} on ${formData.end_date}`;
+            setScheduledTime(employeeId, scheduledTime);
+
             const res = await fetch(`/api/delete/${employeeId}`, {
                 method: 'DELETE',
                 headers: {
@@ -96,13 +101,21 @@ const Table = () => {
             });
             console.log('true')
             setFormSubmitted(true);
-            //rerenders table 
+            // Rerender the table
             getTableFunc();
         } catch (err) {
             console.log('error deleting employee');
         }
     }
-    
+
+    const setScheduledTime = (employeeId, scheduledTime) => {
+        setData(prevData => prevData.map(employee => {
+            if (employee.employee_id === employeeId) {
+                return { ...employee, scheduledTime };
+            }
+            return employee;
+        }));
+    };
 
     const handleFormChange = (e) => {
         e.preventDefault();
@@ -150,7 +163,7 @@ const Table = () => {
             <div className="employeeDetail">Phone Number: {employee.phone_number}</div>
             <br />
             <div className="flex-center">
-            {employeeFormSubmitted[employee.employee_id] ? (<div className="Button">Employee offboard scheduled</div>) : (
+            {employeeFormSubmitted[employee.employee_id] ? (<div className="Button">Employee offboard scheduled for {employee.scheduledTime}</div>) : (
                 <div className="dropdown">
                     <button onClick={() => toggleDropdown(employee.employee_id)}>
                         {employeeDropdownOpen[employee.employee_id] ? "Go Back" : "Offboard"}
