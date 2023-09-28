@@ -10,7 +10,11 @@ module.exports = {
         publicPath: '/dist/',
         filename: 'bundle.js'
     },
-
+    resolve: {
+        fallback: {
+            "path": require.resolve("path-browserify")
+        }
+    },
     module: {
         rules: [
             {
@@ -46,7 +50,7 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         proxy: {
-            '/api': 'http://localhost:3000',
+            '/api': {target: 'http://localhost:3000'}
         },
         static: {
             publicPath: '/',
@@ -60,5 +64,5 @@ module.exports = {
             title: 'Development',
             template: './client/index.html'
         })
-    ]
+    ], 
 }

@@ -19,11 +19,8 @@ async function authorize() {
     return jwtClient;
 }
 
-async function createUser(fullName, email, phone) {
+async function createUser(firstName, lastName, email, phone) {
     const auth = await authorize();
-    const parts = fullName.split(" ");
-    const firstName = parts[0];
-    const lastName = parts[1];
     const userObj = {
         primaryEmail: email,
         name: {

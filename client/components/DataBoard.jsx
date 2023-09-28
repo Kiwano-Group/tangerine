@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import Card from "./Card.jsx";
 
-const Dashboard = () => {
+const DataBoard = () => {
 
     const [totalEmployees, setTotalEmployees] = useState(0);
     const [totalFulltime, setTotalFulltime] = useState(0);
@@ -17,12 +17,12 @@ const Dashboard = () => {
 
                 setTotalFulltime(
                     data.filter(employee =>
-                        employee.type === "full-time"
+                        employee.type === "Full-Time"
                     ).length);
 
                 setTotalContractors(
                     data.filter(employee =>
-                        employee.type === "contractor"
+                        employee.type === "Contractor"
                     ).length);
             });
     }, []);
@@ -34,8 +34,9 @@ const Dashboard = () => {
                 <Card title='Full Time Employees' amount={totalFulltime} />
                 <Card title='Contractors' amount={totalContractors} />
             </div>
+            <br></br>
         </>
     )
 }
 
-export default Dashboard;
+export default DataBoard;

@@ -1,71 +1,120 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const Login = () => {
-    const [input, setInput] = useState(['', '']);
-    const [error, setError] = useState(false);
+import Copyright from '../components/Copyright.jsx';
+import LeftSide from '../components/LeftSide.jsx';
+import LoginForm from '../components/LoginForm.jsx';
+import ErrorMessage from '../components/ErrorMessage.jsx';
+
+
+const defaultTheme = createTheme();
+
+function SignInSide() {
+
+    const [error, setError] = useState("");
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+    });
+
+    // for redirecting to home page on successful login
     const navigate = useNavigate();
 
+    // Track changes in input boxes
+    const onChange = e => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
-    const onChangeHandler2 = (e) => {
-        console.log(e)
-        input[e.target.id] = e.target.value
-        setInput([...input])
-    }
-
-    const onClickHandler2 = async (e) => {
-
+    // Login logic 
+    const loginUser = async (email, password) => {
         try {
-            e.preventDefault();
-            const res = await fetch('/api/login', {
+            const response = await fetch('/api/user/login', {
                 method: 'POST',
                 headers: {
                     "content-type": "application/json"
                 },
-                body: JSON.stringify({
-                    username: input[0],
-                    password: input[1]
-                })
-            })
-            setInput(['', '']);
-            const data = await res.json();
+                body: JSON.stringify({ email, password })
+            });
 
-            console.log(data);
-            if (data == true) {
-                setError(false)
-                navigate('/home');
+            const data = await response.json();
+
+            if (response.status === 200) {
+                navigate('/dashboard');
+            } else {
+                setError(data.message || 'An error occurred. Please try again.');
             }
-            else setError(true);
-
         } catch (err) {
-            console.log('some error', err)
+            console.error('Login error:', err);
+            setError('An unexpected error occurred. Please try again.');
         }
-    }
+    };
 
-    const onClickHandler3 = (e) => {
-        navigate('/signup')
-    }
+    // Click Handler
+    const onSubmit = e => {
+        e.preventDefault();
+        loginUser(formData.email, formData.password);
+    };
 
     return (
-        <div className="signup">
-            <div className="quote">
-                <div className="innerquote">Log in for Speedy Employee Service</div>
-            </div>
-            <form className="signupform">
-                <label htmlFor='username'>username</label>
-                <input type='text' id={0} className="signuptext" name='username' onChange={onChangeHandler2} value={input[0]}></input>
-                <label htmlFor='password'>password</label>
-                <input type='text' id={1} className="signuptext" name='password' onChange={onChangeHandler2} value={input[1]}></input>
-                <div className="thebuttons">
-                    <button onClick={onClickHandler2}>login</button>
-                    <button onClick={onClickHandler3}>take me to sign up</button>
-                </div>
-                {error ? <div id="error-message">Username or password incorrect</div> : null}
+        <ThemeProvider theme={defaultTheme}>
+            <Grid
+                container
+                component="main"
+                sx={{
+                    height: '100vh'
+                }}>
+                <CssBaseline />
 
-            </form>
-        </div>
+                {/* LeftSide component */}
+                <LeftSide />
+
+                <Grid
+                    item
+                    xs={12}
+                    sm={8}
+                    md={5}
+                    sx={{
+                        backgroundColor: '#F4F4F4',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        py: 3,
+                    }}
+                >
+                    <Typography
+                        component="h1"
+                        variant="h5"
+                        mb={2}
+                        sx={{
+                            fontSize: '2rem',
+                            paddingBottom: 1
+                        }}>
+                        Welcome Back
+                    </Typography>
+
+                    {/* Error Message Component */}
+                    {error && <ErrorMessage message={error} />}
+
+                    {/* Login Form Component */}
+                    <LoginForm formData={formData} onChange={onChange} onSubmit={onSubmit} />
+
+                    {/* Copyright Component */}
+                    <Copyright sx={{ mt: 5 }} />
+
+                </Grid>
+            </Grid>
+        </ThemeProvider >
     );
 }
 
-export default Login;
+export default SignInSide;

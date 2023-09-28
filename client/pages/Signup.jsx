@@ -1,63 +1,136 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import Copyright from '../components/Copyright.jsx';
+import LeftSide from '../components/LeftSide.jsx';
+import SignUpForm from '../components/SignUpForm.jsx';
+import ErrorMessage from '../components/ErrorMessage.jsx';
 
-const Signup = () => {
-    const [text, setText] = useState(['', '']);
+const defaultTheme = createTheme();
+
+function SignUpSide() {
+    const [error, setError] = useState("");
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    });
+
+    // Deconstruct input
+
+    // for redirecting to home page on successful sign up
     const navigate = useNavigate();
 
-    const onChangeHandler = (e) => {
-        console.log(e)
-        text[e.target.id] = e.target.value
-        setText([...text])
-    }
+    // Track changes in input boxes
+    const onChange = e => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
-    const onClickHandler = async (e) => {
-       
-        try {
-            e.preventDefault();
-            const res = await fetch('/api/signup', {
-            method: 'POST',
-            headers: {
-                "content-type": "application/json"
-            },  
-            body: JSON.stringify({
-                username: text[0],
-                password: text[1]
-            })
-          });
-            setText(['', '']);
-            navigate('/');
+    const registerUser = async (formData) => {
 
-        } catch (err) {
-           console.log('some error', err)
+        const { name, email, password, confirmPassword } = formData;
+
+        console.log(formData);
+
+        if (password !== confirmPassword) {
+            console.error("Passwords do not match");
+            return;
         }
-    }
 
-    const onClickHandler2 = (e) => {
-        navigate('/')
-    }
+        try {
+            const response = await fetch('/api/user/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password
+                })
+            });
 
-  return (
-     <div className="signup">
-        <div className="quote">
-            <div className="innerquote">Speedy Employee Service</div>   
-        </div>
-        <form className="signupform">
-           
-            <label htmlFor='username'>username</label>
-            <input type='text'id= {0} className="signuptext" name='username' onChange={onChangeHandler} value={text[0]}></input>
-            <label htmlFor='password'>password</label>
-            <input type='text' className="signuptext" id= {1} name='password' onChange={onChangeHandler} value={text[1]}></input>
-          
-            <div className="thebuttons">
-            <button onClick={onClickHandler}>sign up</button>
-            <button onClick={onClickHandler2}>take me to login</button>
-            </div>
-        </form>
-     </div>
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log("Registration successful:", data.message);
+                navigate('/login');
+            } else {
+                console.error("Registration failed:", data.message);
+                setError(data.message || 'An error occurred. Please try again.');
+
+            }
+        } catch (err) {
+            console.error("An error occurred during registration:", err);
+            setError('An unexpected error occurred. Please try again.');
+
+        }
+
+
+    };
+
+    // Click Handler
+    const onSubmit = e => {
+        e.preventDefault();
+        registerUser(formData);
+    };
+
+
+    return (
+        <ThemeProvider theme={defaultTheme}>
+            <Grid container component="main" sx={{ height: '100vh' }}>
+                <CssBaseline />
+
+                {/* LeftSide component */}
+                <LeftSide />
+
+                <Grid
+                    item
+                    xs={12}
+                    sm={8}
+                    md={5}
+                    sx={{
+                        backgroundColor: '#F4F4F4',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        py: 3,
+                    }}
+                >
+                    <Typography
+                        component="h1"
+                        variant="h5"
+                        mb={2}
+                        sx={{
+                            fontSize: '2rem',
+                            paddingBottom: 1
+                        }}>
+                        Sign Up 🙂
+                    </Typography>
+
+                    {/* Error Message Component */}
+                    {error && <ErrorMessage message={error} />}
+
+                    {/* Sign Up Form Component */}
+                    <SignUpForm formData={formData} onChange={onChange} onSubmit={onSubmit} />
+
+                    {/* Copyright Component */}
+                    <Copyright sx={{ mt: 5 }} />
+                </Grid>
+            </Grid>
+        </ThemeProvider>
     );
 }
 
-export default Signup;
+export default SignUpSide;
