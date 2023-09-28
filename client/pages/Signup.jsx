@@ -1,29 +1,48 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Signup() {
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-    const [error, setError] = useState(false);
+import Copyright from '../components/Copyright.jsx';
+import LeftSide from '../components/LeftSide.jsx';
+import SignUpForm from '../components/SignUpForm.jsx';
+import ErrorMessage from '../components/ErrorMessage.jsx';
+
+const defaultTheme = createTheme();
+
+function SignUpSide() {
+    const [error, setError] = useState("");
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         password: "",
-        password2: "",
+        confirmPassword: ""
     });
 
+    // Deconstruct input
+
+    // for redirecting to home page on successful sign up
     const navigate = useNavigate();
 
-    const { name, email, password, password2 } = formData;
-
+    // Track changes in input boxes
     const onChange = e => {
         const { name, value } = e.target;
-        setFormData(prevState => ({ ...prevState, [name]: value }));
-    }
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
-    const onSubmit = async e => {
-        e.preventDefault();
+    const registerUser = async (formData) => {
 
-        if (password !== password2) {
+        const { name, email, password, confirmPassword } = formData;
+
+        console.log(formData);
+
+        if (password !== confirmPassword) {
             console.error("Passwords do not match");
             return;
         }
@@ -45,71 +64,73 @@ function Signup() {
 
             if (response.ok) {
                 console.log("Registration successful:", data.message);
-                navigate('/');  // Redirect to the login page after successful registration.
-
+                navigate('/login');
             } else {
                 console.error("Registration failed:", data.message);
+                setError(data.message || 'An error occurred. Please try again.');
+
             }
         } catch (err) {
             console.error("An error occurred during registration:", err);
+            setError('An unexpected error occurred. Please try again.');
+
         }
-    }
+
+
+    };
+
+    // Click Handler
+    const onSubmit = e => {
+        e.preventDefault();
+        registerUser(formData);
+    };
 
 
     return (
-        <section>
-            <div className="heading">
-                <h1>
-                    Sign Up
-                </h1>
-            </div>
-            <div className="form">
-                <form onSubmit={onSubmit}>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="name"
-                            name="name"
-                            value={name}
-                            placeholder="Enter your name"
-                            onChange={onChange}
-                        />
-                        <input
-                            type="email"
-                            className="form-control"
-                            id="email"
-                            name="email"
-                            value={email}
-                            placeholder="Enter your email"
-                            onChange={onChange}
-                        />
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="password"
-                            name="password"
-                            value={password}
-                            placeholder="Enter your password"
-                            onChange={onChange}
-                        />
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="password2"
-                            name="password2"
-                            value={password2}
-                            placeholder="Confirm your password"
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <button type="submit" className="btn btn-block">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </section>
+        <ThemeProvider theme={defaultTheme}>
+            <Grid container component="main" sx={{ height: '100vh' }}>
+                <CssBaseline />
+
+                {/* LeftSide component */}
+                <LeftSide />
+
+                <Grid
+                    item
+                    xs={12}
+                    sm={8}
+                    md={5}
+                    sx={{
+                        backgroundColor: '#F4F4F4',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        py: 3,
+                    }}
+                >
+                    <Typography
+                        component="h1"
+                        variant="h5"
+                        mb={2}
+                        sx={{
+                            fontSize: '2rem',
+                            paddingBottom: 1
+                        }}>
+                        Sign Up 🙂
+                    </Typography>
+
+                    {/* Error Message Component */}
+                    {error && <ErrorMessage message={error} />}
+
+                    {/* Sign Up Form Component */}
+                    <SignUpForm formData={formData} onChange={onChange} onSubmit={onSubmit} />
+
+                    {/* Copyright Component */}
+                    <Copyright sx={{ mt: 5 }} />
+                </Grid>
+            </Grid>
+        </ThemeProvider>
     );
 }
 
-export default Signup;
+export default SignUpSide;
