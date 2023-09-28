@@ -2,9 +2,26 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-function SignUpForm({ formData, onChange, onSubmit }) {
+import { Divider } from '@mui/material';
+
+import googleButton from '../assets/btn_google_signin_dark_normal_web.png';
+
+function SignUpForm({ formData, onChange, onSubmit, onGoogleSignUp }) {
     return (
         <form onSubmit={onSubmit} style={{ margin: '0 auto', maxWidth: '80%' }}>
+
+            <Button
+                onClick={onGoogleSignUp}
+                fullWidth
+            >
+                <img src={googleButton} alt="Sign up with Google" />
+            </Button>
+
+            <Divider variant='middle' sx={{
+                margin: 4,
+                my: '2'
+            }}>OR</Divider>
+
             {/* Full Name Field */}
             <TextField
                 variant="outlined"

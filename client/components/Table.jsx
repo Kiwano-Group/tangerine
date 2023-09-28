@@ -24,29 +24,29 @@ const Table = () => {
     const date = new Date();
     let month = ("0" + (date.getMonth() + 1)).slice(-2);
     let day = ("0" + date.getDate()).slice(-2);
-    const currentDate =  date.getFullYear().toString() + '-' + month + '-' + day;
+    const currentDate = date.getFullYear().toString() + '-' + month + '-' + day;
 
     const getTableFunc = () => {
         fetch("/api/table")
-        .then(response => response.json())
-        .then(fetchedData => {
-            const updatedData = fetchedData.map(employee => ({
-            ...employee,
-            formSubmitted: false,
-            dropdownOpen: false
-            }));
-            setData(updatedData);
+            .then(response => response.json())
+            .then(fetchedData => {
+                const updatedData = fetchedData.map(employee => ({
+                    ...employee,
+                    formSubmitted: false,
+                    dropdownOpen: false
+                }));
+                setData(updatedData);
 
-            const initialEmployeeFormSubmitted = {};
-            const initialEmployeeDropdownOpen = {};
-            fetchedData.forEach(employee => {
-            initialEmployeeFormSubmitted[employee.employee_id] = false;
-            initialEmployeeDropdownOpen[employee.employee_id] = false;
+                const initialEmployeeFormSubmitted = {};
+                const initialEmployeeDropdownOpen = {};
+                fetchedData.forEach(employee => {
+                    initialEmployeeFormSubmitted[employee.employee_id] = false;
+                    initialEmployeeDropdownOpen[employee.employee_id] = false;
 
+                });
+                setEmployeeFormSubmitted(initialEmployeeFormSubmitted);
+                setEmployeeDropdownOpen(initialEmployeeDropdownOpen)
             });
-            setEmployeeFormSubmitted(initialEmployeeFormSubmitted);
-            setEmployeeDropdownOpen(initialEmployeeDropdownOpen)
-        });
     }
 
     useEffect(getTableFunc, []);
@@ -69,9 +69,9 @@ const Table = () => {
     }
 
     const editHandle = async (employeeId) => {
-        try{
+        try {
 
-        } catch (err){
+        } catch (err) {
             console.log('Error editing employee')
         }
     };
@@ -82,7 +82,7 @@ const Table = () => {
             setEmployeeFormSubmitted(prevEmployeeFormSubmitted => ({
                 ...prevEmployeeFormSubmitted,
                 [employeeId]: true,
-              }));
+            }));
             const res = await fetch(`/api/delete/${employeeId}`, {
                 method: 'DELETE',
                 headers: {
@@ -102,7 +102,7 @@ const Table = () => {
             console.log('error deleting employee');
         }
     }
-    
+
 
     const handleFormChange = (e) => {
         e.preventDefault();
@@ -125,64 +125,64 @@ const Table = () => {
                 <span className="tableHeadName">Department</span>
                 <span className="tableHeadName">Start Date</span>
                 <span className="tableHeadName">Type</span>
-            </div> 
+            </div>
             <div className="tableBody">
-    {currentData.map((employee) => (
-    <Accordion key={employee.employee_id}>
-        <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header">
-        <Typography className="Typography">
-            <span className="employeeInfo">{employee.first_name}</span>
-            <span className="employeeInfo">{employee.last_name}</span>
-            <span className="employeeInfo">{employee.department}</span>
-            <span className="employeeInfo">{employee.role}</span>
-            <span className="employeeInfo">{formatDate(employee.start_date)}</span>
-            <span className="employeeInfo">{employee.type}</span>
-        </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-        <Typography>
-            <div className="employeeDetail">Salary: {employee.salary}</div>
-            <div className="employeeDetail">Birthday: {formatDate(employee.birthday)}</div>
-            <div className="employeeDetail">Email: {employee.email}</div>
-            <div className="employeeDetail">Phone Number: {employee.phone_number}</div>
-            <br />
-            <div className="flex-center">
-            {employeeFormSubmitted[employee.employee_id] ? (<div className="Button">Employee offboard scheduled</div>) : (
-                <div className="dropdown">
-                    <button onClick={() => toggleDropdown(employee.employee_id)}>
-                        {employeeDropdownOpen[employee.employee_id] ? "Go Back" : "Offboard"}
-                    </button>
-                                {employeeDropdownOpen[employee.employee_id] && (
-                            <div className="dropdown-content">
-                            <form onSubmit={handleSubmit}>
-                                <ul>
-                                    <li>
-                                        <label htmlFor="end_date">Offboard Date </label>
-                                        <input type="date" id="end" name="end_date" min={currentDate} value={formData.end_date} onChange={handleFormChange} />
-                                    </li>
-                                    <li>
-                                        <label htmlFor="end_time">Offboard Time </label>
-                                        <input type="time" id="obTime" name="obTime" min="06:00" max="24:00" required value={formData.obTime} onChange={handleFormChange} />
-                                    </li>
-                                    <li>
-                                        <button type="submit" onClick={() => clickHandle(employee.employee_id)}>Confirm Offboarding</button>
-                                    </li>
-                                </ul>
-                            </form>
-                        </div>
-                        )}
-                    {employeeDropdownOpen[employee.employee_id] ? null: <button className="Button">Edit Info</button>}
-                </div>
-                )}
-        </div>
-        </Typography>
-        </AccordionDetails>
-    </Accordion>
-    ))}
-</div>
+                {currentData.map((employee) => (
+                    <Accordion key={employee.employee_id}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header">
+                            <Typography className="Typography">
+                                <span className="employeeInfo">{employee.first_name}</span>
+                                <span className="employeeInfo">{employee.last_name}</span>
+                                <span className="employeeInfo">{employee.department}</span>
+                                <span className="employeeInfo">{employee.role}</span>
+                                <span className="employeeInfo">{formatDate(employee.start_date)}</span>
+                                <span className="employeeInfo">{employee.type}</span>
+                            </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography>
+                                <div className="employeeDetail">Salary: {employee.salary}</div>
+                                <div className="employeeDetail">Birthday: {formatDate(employee.birthday)}</div>
+                                <div className="employeeDetail">Email: {employee.email}</div>
+                                <div className="employeeDetail">Phone Number: {employee.phone_number}</div>
+                                <br />
+                                <div className="flex-center">
+                                    {employeeFormSubmitted[employee.employee_id] ? (<div className="Button">Employee offboard scheduled</div>) : (
+                                        <div className="dropdown">
+                                            <button onClick={() => toggleDropdown(employee.employee_id)}>
+                                                {employeeDropdownOpen[employee.employee_id] ? "Go Back" : "Offboard"}
+                                            </button>
+                                            {employeeDropdownOpen[employee.employee_id] && (
+                                                <div className="dropdown-content">
+                                                    <form onSubmit={handleSubmit}>
+                                                        <ul>
+                                                            <li>
+                                                                <label htmlFor="end_date">Offboard Date </label>
+                                                                <input type="date" id="end" name="end_date" min={currentDate} value={formData.end_date} onChange={handleFormChange} />
+                                                            </li>
+                                                            <li>
+                                                                <label htmlFor="end_time">Offboard Time </label>
+                                                                <input type="time" id="obTime" name="obTime" min="06:00" max="24:00" required value={formData.obTime} onChange={handleFormChange} />
+                                                            </li>
+                                                            <li>
+                                                                <button type="submit" onClick={() => clickHandle(employee.employee_id)}>Confirm Offboarding</button>
+                                                            </li>
+                                                        </ul>
+                                                    </form>
+                                                </div>
+                                            )}
+                                            {employeeDropdownOpen[employee.employee_id] ? null : <button className="Button">Edit Info</button>}
+                                        </div>
+                                    )}
+                                </div>
+                            </Typography>
+                        </AccordionDetails>
+                    </Accordion>
+                ))}
+            </div>
 
             <br></br>
             <div className="flex-center">
