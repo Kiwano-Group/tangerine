@@ -186,14 +186,22 @@ employeeController.updateDb = async (req, res, next) => {
 
 //delete a row
 employeeController.deleteOne = async (req, res, next) => {
-  const { id } = req.params
-  console.log('we hit')
+  console.log('heresdasd')
+  const { employeeId, end_date, obTime } = req.body
+  console.log(`Delete Request Recieved, ${employeeId}, ${end_date}, ${obTime}`)
+  const splitTime = obTime.split(':')
+  const hour = splitTime[0];
+  const minute = splitTime[1];
+  const splitDate = end_date.split('-')
+  const  month = splitDate[1];
+  const day = splitDate[2];
+  console.log(`${minute} ${hour} ${day} ${month} *`)
   // cronJob for scheduling hires and fires.
-  const deleteJob = schedule.scheduleJob('15 15 * * *', async function() {
+  const deleteJob = schedule.scheduleJob(`${minute} ${hour} ${day} ${month} *`, async function() {
     try {
-      console.log('Look here!!!!!!!!!!');
+      console.log(`${employeeId} deleted`);
       const myQuery = 'DELETE FROM employees WHERE employee_id = $1;';
-      const value = [id];
+      const value = [employeeId];
       const result = await db.query(myQuery, value);
       // console.log(result);
       deleteJob.cancel(); // Stop the job after execution

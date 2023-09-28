@@ -162,6 +162,16 @@ button {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+.Button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
 button:hover {
     background-color: var(--hover-color);
