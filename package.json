@@ -39,7 +39,8 @@
     "react-hook-form": "^7.46.2",
     "react-icons": "^4.11.0",
     "react-router-dom": "^6.16.0",
-    "shelljs": "^0.8.5"
+    "shelljs": "^0.8.5",
+    "typed.js": "^2.0.16"
   },
   "devDependencies": {
     "@babel/core": "^7.22.20",

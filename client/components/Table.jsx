@@ -152,7 +152,7 @@ const nameFilter = async () => {
         <AccordionDetails>
         <Typography>
             <div className="employeeDetail">Salary: {employee.salary}</div>
-            <div className="employeeDetail">Birthday: {employee.birthday}</div>
+            <div className="employeeDetail">Birthday:{formatDate(employee.birthday)}</div>
             <div className="employeeDetail">Email: {employee.email}</div>
             <div className="employeeDetail">Phone Number: {employee.phone_number}</div>
             <br />
@@ -206,7 +206,7 @@ const nameFilter = async () => {
         <AccordionDetails>
         <Typography>
         <div className="employeeDetail">Salary: {employee.salary}</div>
-            <div className="employeeDetail">Birthday: {formatDate(employee.birthday)}</div>
+            <div className="employeeDetail">Birthday:{formatDate(employee.birthday)}</div>
             <div className="employeeDetail">Email: {employee.email}</div>
             <div className="employeeDetail">Phone Number: {employee.phone_number}</div>
             <br />
