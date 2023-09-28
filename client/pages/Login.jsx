@@ -11,18 +11,23 @@ import LeftSide from '../components/LeftSide.jsx';
 import LoginForm from '../components/LoginForm.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 
+import { useAuth } from '../authContext.js';
 
 const defaultTheme = createTheme();
 
 function SignInSide() {
 
+    // Firebase context
+    const { login, signInWithGoogle } = useAuth();
+
+    // States
     const [error, setError] = useState("");
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
 
-    // for redirecting to home page on successful login
+    // for redirecting 
     const navigate = useNavigate();
 
     // Track changes in input boxes
@@ -34,34 +39,56 @@ function SignInSide() {
         }));
     };
 
-    // Login logic 
-    const loginUser = async (email, password) => {
+
+    // MONGODB Login Logic Below
+    // // Login logic 
+    // const loginUser = async (email, password) => {
+    //     try {
+    //         const response = await fetch('/api/user/login', {
+    //             method: 'POST',
+    //             headers: {
+    //                 "content-type": "application/json"
+    //             },
+    //             body: JSON.stringify({ email, password })
+    //         });
+
+    //         const data = await response.json();
+
+    //         if (response.status === 200) {
+    //             navigate('/dashboard');
+    //         } else {
+    //             setError(data.message || 'An error occurred. Please try again.');
+    //         }
+    //     } catch (err) {
+    //         console.error('Login error:', err);
+    //         setError('An unexpected error occurred. Please try again.');
+    //     }
+    // };
+
+    // Firebase Email/Password
+    const loginUserWithEmail = async (email, password) => {
         try {
-            const response = await fetch('/api/user/login', {
-                method: 'POST',
-                headers: {
-                    "content-type": "application/json"
-                },
-                body: JSON.stringify({ email, password })
-            });
-
-            const data = await response.json();
-
-            if (response.status === 200) {
-                navigate('/dashboard');
-            } else {
-                setError(data.message || 'An error occurred. Please try again.');
-            }
+            await login(email, password);
+            navigate('/dashboard');
         } catch (err) {
-            console.error('Login error:', err);
-            setError('An unexpected error occurred. Please try again.');
+            setError(err.message);
+        }
+    };
+
+    // Firebase Google Oauth
+    const loginUserWithGoogle = async () => {
+        try {
+            await signInWithGoogle();
+            navigate('/dashboard');
+        } catch (err) {
+            setError(err.message);
         }
     };
 
     // Click Handler
     const onSubmit = e => {
         e.preventDefault();
-        loginUser(formData.email, formData.password);
+        loginUserWithEmail(formData.email, formData.password);
     };
 
     return (
@@ -77,6 +104,7 @@ function SignInSide() {
                 {/* LeftSide component */}
                 <LeftSide />
 
+                {/* Right side of the page */}
                 <Grid
                     item
                     xs={12}
@@ -106,7 +134,12 @@ function SignInSide() {
                     {error && <ErrorMessage message={error} />}
 
                     {/* Login Form Component */}
-                    <LoginForm formData={formData} onChange={onChange} onSubmit={onSubmit} />
+                    <LoginForm
+                        formData={formData}
+                        onChange={onChange}
+                        onSubmit={onSubmit}
+                        onGoogleLogin={loginUserWithGoogle}
+                    />
 
                     {/* Copyright Component */}
                     <Copyright sx={{ mt: 5 }} />

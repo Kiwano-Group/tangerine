@@ -1,15 +1,3 @@
-// import React from "react";
-// import { createRoot } from 'react-dom/client';
-// import App from './App.jsx'
-// import './style.css';
-
-
-// const root = createRoot(document.getElementById('root'));
-// root.render(
-//     <App />
-// )
-
-
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import {
@@ -25,6 +13,11 @@ import Profile from "./pages/Profile.jsx";
 import Settings from "./pages/Settings.jsx";
 import Home from "./pages/Home.jsx";
 
+import { AuthProvider } from './authContext.js';
+
+import ProtectedRoute from './protectedRoute.jsx';  // adjust the path accordingly
+
+
 const router = createBrowserRouter([{
   path: "/",
   element: <Home />
@@ -38,22 +31,40 @@ const router = createBrowserRouter([{
 },
 {
   path: "dashboard",
-  element: <Dashboard />,
+  element: (
+    <ProtectedRoute>
+      < Dashboard />,
+    </ProtectedRoute>
+  )
 },
 {
   path: "onboard",
-  element: <Onboarding />,
+  element: (
+    <ProtectedRoute>
+      < Onboarding />,
+    </ProtectedRoute>
+  )
 },
 {
   path: "profile",
-  element: <Profile />
+  element: (
+    <ProtectedRoute>
+      <Profile />
+    </ProtectedRoute>
+  )
 },
 {
   path: "settings",
-  element: <Settings />
+  element: (
+    <ProtectedRoute>
+      <Settings />
+    </ProtectedRoute>
+  )
 },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );

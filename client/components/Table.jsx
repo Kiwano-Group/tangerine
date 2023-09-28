@@ -20,33 +20,30 @@ const Table = () => {
         end_date: "",
         obTime: "",
     });
-
     const date = new Date();
     let month = ("0" + (date.getMonth() + 1)).slice(-2);
     let day = ("0" + date.getDate()).slice(-2);
-    const currentDate =  date.getFullYear().toString() + '-' + month + '-' + day;
+    const currentDate = date.getFullYear().toString() + '-' + month + '-' + day;
 
     const getTableFunc = () => {
         fetch("/api/table")
-        .then(response => response.json())
-        .then(fetchedData => {
-            const updatedData = fetchedData.map(employee => ({
-            ...employee,
-            formSubmitted: false,
-            dropdownOpen: false
-            }));
-            setData(updatedData);
-
-            const initialEmployeeFormSubmitted = {};
-            const initialEmployeeDropdownOpen = {};
-            fetchedData.forEach(employee => {
-            initialEmployeeFormSubmitted[employee.employee_id] = false;
-            initialEmployeeDropdownOpen[employee.employee_id] = false;
-
+            .then(response => response.json())
+            .then(fetchedData => {
+                const updatedData = fetchedData.map(employee => ({
+                    ...employee,
+                    formSubmitted: false,
+                    dropdownOpen: false
+                }));
+                setData(updatedData);
+                const initialEmployeeFormSubmitted = {};
+                const initialEmployeeDropdownOpen = {};
+                fetchedData.forEach(employee => {
+                    initialEmployeeFormSubmitted[employee.employee_id] = false;
+                    initialEmployeeDropdownOpen[employee.employee_id] = false;
+                });
+                setEmployeeFormSubmitted(initialEmployeeFormSubmitted);
+                setEmployeeDropdownOpen(initialEmployeeDropdownOpen)
             });
-            setEmployeeFormSubmitted(initialEmployeeFormSubmitted);
-            setEmployeeDropdownOpen(initialEmployeeDropdownOpen)
-        });
     }
 
     useEffect(getTableFunc, []);
@@ -61,21 +58,19 @@ const Table = () => {
         const date = new Date(databaseDate);
         return date.toISOString().split('T')[0];
     };
+
     const toggleDropdown = (employeeId) => {
         setEmployeeDropdownOpen(prevState => ({
             ...prevState,
             [employeeId]: !prevState[employeeId]
         }));
     }
-
     const editHandle = async (employeeId) => {
-        try{
-
-        } catch (err){
+        try {
+        } catch (err) {
             console.log('Error editing employee')
         }
     };
-
     const clickHandle = async (employeeId) => {
         console.log(employeeId);
         try {
@@ -124,21 +119,31 @@ const Table = () => {
             [e.target.name]: e.target.value
         });
     }
-
     const handleSubmit = (event) => {
         event.preventDefault();
     }
 
+    const nameFilter = async () => {
+        try {
+            const res = await fetch('/api/filterFirstName')
+                .then(res => res.json());
+
+            setFilteredData(res);
+        } catch (err) {
+            console.log('error filter by first name', err);
+        }
+    }
     return (
         <div className="container">
             <div className='tableHead'>
-                <span className="tableHeadName">First Name</span>
+                <span className="tableHeadName" onClick={nameFilter}>First Name</span>
                 <span className="tableHeadName">Last Name</span>
                 <span className="tableHeadName">Role</span>
                 <span className="tableHeadName">Department</span>
                 <span className="tableHeadName">Start Date</span>
                 <span className="tableHeadName">Type</span>
-            </div> 
+                <SecretButton />
+            </div>
             <div className="tableBody">
     {currentData.map((employee) => (
     <Accordion key={employee.employee_id}>

@@ -48,7 +48,7 @@ function SignInSide() {
             const data = await response.json();
 
             if (response.status === 200) {
-                navigate('/home');
+                navigate('/dashboard');
             } else {
                 setError(data.message || 'An error occurred. Please try again.');
             }

@@ -6,14 +6,23 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+// Components
 import Copyright from '../components/Copyright.jsx';
 import LeftSide from '../components/LeftSide.jsx';
 import SignUpForm from '../components/SignUpForm.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 
+// Firebase
+import { useAuth } from '../authContext.js';
+
 const defaultTheme = createTheme();
 
-function SignUpSide() {
+function Signup() {
+
+    // Firebase context
+    const { signUp, signInWithGoogle } = useAuth();
+
+    // States
     const [error, setError] = useState("");
     const [formData, setFormData] = useState({
         name: "",
@@ -22,9 +31,8 @@ function SignUpSide() {
         confirmPassword: ""
     });
 
-    // Deconstruct input
 
-    // for redirecting to home page on successful sign up
+    // for redirecting 
     const navigate = useNavigate();
 
     // Track changes in input boxes
@@ -36,47 +44,80 @@ function SignUpSide() {
         }));
     };
 
-    const registerUser = async (formData) => {
+    // MongoDB Logic
+    // const registerUser = async (formData) => {
 
+    //     // Deconstruct input
+    //     const { name, email, password, confirmPassword } = formData;
+
+    //     console.log(formData);
+
+    //     if (password !== confirmPassword) {
+    //         console.error("Passwords do not match");
+    //         return;
+    //     }
+
+    //     try {
+    //         const response = await fetch('/api/user/signup', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 name: name,
+    //                 email: email,
+    //                 password: password
+    //             })
+    //         });
+
+    //         const data = await response.json();
+
+    //         if (response.ok) {
+    //             console.log("Registration successful:", data.message);
+    //             navigate('/login');
+    //         } else {
+    //             console.error("Registration failed:", data.message);
+    //             setError(data.message || 'An error occurred. Please try again.');
+
+    //         }
+    //     } catch (err) {
+    //         console.error("An error occurred during registration:", err);
+    //         setError('An unexpected error occurred. Please try again.');
+
+    //     }
+    // };
+
+    // Firebase password/email
+    const registerUser = async (formData) => {
         const { name, email, password, confirmPassword } = formData;
 
-        console.log(formData);
-
         if (password !== confirmPassword) {
-            console.error("Passwords do not match");
+            setError("Passwords do not match");
             return;
         }
 
         try {
-            const response = await fetch('/api/user/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    email: email,
-                    password: password
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                console.log("Registration successful:", data.message);
-                navigate('/login');
-            } else {
-                console.error("Registration failed:", data.message);
-                setError(data.message || 'An error occurred. Please try again.');
-
-            }
+            await signUp(email, password);
+            // Optionally, save other user data (like "name") to a user profile in Firebase
+            // or your own backend.
+            console.log("Registration successful");
+            navigate('/login');
         } catch (err) {
-            console.error("An error occurred during registration:", err);
+            console.error('Signup error:', err);
             setError('An unexpected error occurred. Please try again.');
-
         }
+    };
 
-
+    // Firebase google oauth
+    const registerUserWithGoogle = async () => {
+        try {
+            await signInWithGoogle();
+            console.log("Registration with Google successful");
+            navigate('/dashboard'); // or navigate to any other route you prefer after sign up
+        } catch (err) {
+            console.error('Google Signup error:', err);
+            setError('An unexpected error occurred. Please try again.');
+        }
     };
 
     // Click Handler
@@ -94,6 +135,7 @@ function SignUpSide() {
                 {/* LeftSide component */}
                 <LeftSide />
 
+                {/* Right side of the page */}
                 <Grid
                     item
                     xs={12}
@@ -123,7 +165,11 @@ function SignUpSide() {
                     {error && <ErrorMessage message={error} />}
 
                     {/* Sign Up Form Component */}
-                    <SignUpForm formData={formData} onChange={onChange} onSubmit={onSubmit} />
+                    <SignUpForm
+                        formData={formData}
+                        onChange={onChange}
+                        onSubmit={onSubmit}
+                        onGoogleSignUp={registerUserWithGoogle} />
 
                     {/* Copyright Component */}
                     <Copyright sx={{ mt: 5 }} />
@@ -133,4 +179,4 @@ function SignUpSide() {
     );
 }
 
-export default SignUpSide;
+export default Signup;

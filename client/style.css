@@ -121,6 +121,7 @@ li {
 }
 
 .tableHead {
+    width: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -132,9 +133,31 @@ li {
     padding: 20px;
 }
 
+.SecretButton {
+    background-color: #F28500;
+    padding: 1.5%;
+}
+
+
+.SecretToggle.open .FilterMenu{
+    height: 100%;
+    width: 100%;
+    border: solid;
+    
+    position: fixed;
+    opacity: 1;
+    visibility: visible;
+
+}
+
+.SecretToggle.close {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+}
+
 .tableBody {
-    height: 500px;
-    background-color: white;
+    background-color:white;
 }
 
 .Typography {
@@ -149,6 +172,10 @@ li {
 
 .employeeDetail {
     margin-bottom: 10px;
+}
+
+.flex-center {
+    margin: 15px;
 }
 
 button {
@@ -403,7 +430,7 @@ fieldset>legend {
 select {
     font-size: 1rem;
     border: 2px solid #e0dfde;
-    border-radius: 15px;
+    border-radius: 2px;
     width: auto;
     height: 32px;
     padding: 0 10px;
@@ -485,17 +512,17 @@ select {
     display: flex;
     justify-content: space-between;
     text-align: center;
-    padding: 20px 5%;
+    padding: 10px 5%;
     background-color: #ffffff;
     border-bottom: 1px solid #e6e6e6;
     margin-bottom: 60px;
     box-shadow: 0px 10px 40px -10px hsl(230, 6%, 80%);
-    color: #ffad42;
-    margin-top: 10px;
+    color: #ffa228;
+    margin-top: 20px;
 }
 
 .kiwano-link{
-    color: #ffad42;
+    color: #ffa228;
     text-decoration: none;
 }
 
@@ -509,6 +536,57 @@ select {
 }
 
 .sidebar{
-    background-color: #ffad42;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10%;
+    background-color: #F4F4F4;
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 60px;
+    box-shadow: 0px 10px 40px -10px hsl(230, 6%, 80%);
     margin: 0px;
+}
+
+.tangerine{
+    color: #F28500;
+    font-size: 36px;
+}
+
+.sidebar-btn {
+    border: 1px solid var(--disabled-color);
+    border-radius: 5px;
+    background: var(--primary-color);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    display: flex;
+    padding: 0em 1em;
+    margin: 0 2em;
+    text-decoration: none;
+}
+
+.material-list{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+}
+
+.list-item-text{
+    flex: 1;
+    text-align: center;
+    margin: 10px 0px;
+}
+
+
+.bottom-push {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
 }
