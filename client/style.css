@@ -121,6 +121,7 @@ li {
 }
 
 .tableHead {
+    width: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -132,9 +133,31 @@ li {
     padding: 20px;
 }
 
+.SecretButton {
+    background-color: #F28500;
+    padding: 1.5%;
+}
+
+
+.SecretToggle.open .FilterMenu{
+    height: 100%;
+    width: 100%;
+    border: solid;
+    
+    position: fixed;
+    opacity: 1;
+    visibility: visible;
+
+}
+
+.SecretToggle.close {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+}
+
 .tableBody {
-    height: 500px;
-    background-color: white;
+    background-color:white;
 }
 
 .Typography {
@@ -149,6 +172,10 @@ li {
 
 .employeeDetail {
     margin-bottom: 10px;
+}
+
+.flex-center {
+    margin: 15px;
 }
 
 button {
