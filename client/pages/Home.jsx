@@ -96,8 +96,9 @@ function SignInSide() {
                         variant="h5"
                         mb={2}
                         sx={{
-                            fontSize: '2.7rem',
-                            paddingBottom: 1
+                            fontSize: '1.8rem',
+                            paddingBottom: 1,
+                            fontWeight: 'bold'
                         }}>
                         Get Started
                     </Typography>
@@ -105,25 +106,57 @@ function SignInSide() {
                     {/* Error Message Component */}
                     {error && <ErrorMessage message={error} />}
 
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                    <Grid container spacing={0}>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={6}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                                alignItems: 'center'
+                            }}
+                        >
                             <Button
                                 type="submit"
-                                fullWidth
                                 variant="contained"
                                 color="primary"
-                                sx={{ height: 50, padding: '4px', marginTop: 3, }}
+                                onClick={() => navigate('/login')}
+                                sx={{
+                                    width: '140px',
+                                    height: '40px',
+                                    padding: '0 15px',
+                                    margin: '0 15px 0 15px',
+                                    fontSize: '1rem',
+                                    textTransform: 'none'
+                                }}
                             >
                                 Log In
                             </Button>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={6}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                alignItems: 'center'
+                            }}
+                        >
                             <Button
                                 type="submit"
-                                fullWidth
                                 variant="contained"
                                 color="primary"
-                                sx={{ height: 50, padding: '4px', marginTop: 3 }}
+                                onClick={() => navigate('/signup')}
+                                sx={{
+                                    width: '140px',
+                                    height: '40px',
+                                    padding: '0 15px',
+                                    margin: '0 15px 0 15px',
+                                    fontSize: '1rem',
+                                    textTransform: 'none'
+                                }}
                             >
                                 Sign Up
                             </Button>

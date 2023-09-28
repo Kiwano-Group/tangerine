@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 
 function LoginForm({ formData, onChange, onSubmit }) {
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} style={{ margin: '0 auto', maxWidth: '80%' }}>
             <TextField
                 variant="outlined"
                 margin="normal"

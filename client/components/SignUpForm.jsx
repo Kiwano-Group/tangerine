@@ -4,32 +4,24 @@ import Button from '@mui/material/Button';
 
 function SignUpForm({ formData, onChange, onSubmit }) {
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} style={{ margin: '0 auto', maxWidth: '80%' }}>
+            {/* Full Name Field */}
             <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
-                name="firstName"
-                autoComplete="given-name"
+                id="name"
+                label="Full Name"
+                name="name"
+                type="text"
+                autoComplete="name"
                 autoFocus
-                value={formData.firstName}
+                value={formData.name}
                 onChange={onChange}
             />
-            <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-                value={formData.lastName}
-                onChange={onChange}
-            />
+
+            {/* Email Field */}
             <TextField
                 variant="outlined"
                 margin="normal"
@@ -43,6 +35,8 @@ function SignUpForm({ formData, onChange, onSubmit }) {
                 value={formData.email}
                 onChange={onChange}
             />
+
+            {/* Password Field */}
             <TextField
                 variant="outlined"
                 margin="normal"
@@ -56,6 +50,8 @@ function SignUpForm({ formData, onChange, onSubmit }) {
                 value={formData.password}
                 onChange={onChange}
             />
+
+            {/* Confirm Password Field */}
             <TextField
                 variant="outlined"
                 margin="normal"
@@ -69,6 +65,8 @@ function SignUpForm({ formData, onChange, onSubmit }) {
                 value={formData.confirmPassword}
                 onChange={onChange}
             />
+
+            {/* Sign Up Button */}
             <Button
                 type="submit"
                 fullWidth

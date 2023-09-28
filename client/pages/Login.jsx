@@ -98,7 +98,7 @@ function SignInSide() {
                             fontSize: '2rem',
                             paddingBottom: 1
                         }}>
-                        Welcome Back 🙂
+                        Welcome Back
                     </Typography>
 
                     {/* Error Message Component */}

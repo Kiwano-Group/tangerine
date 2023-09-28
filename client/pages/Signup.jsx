@@ -1,142 +1,94 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Copyright from '../components/Copyright.jsx'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import Copyright from '../components/Copyright.jsx';
+import LeftSide from '../components/LeftSide.jsx';
+import SignUpForm from '../components/SignUpForm.jsx'; // Assuming you've named your sign-up form component as SignUpForm
+import ErrorMessage from '../components/ErrorMessage.jsx';
 
 const defaultTheme = createTheme();
 
-
-function SignUp() {
-    const [formData, setFormData] = React.useState({
+function SignUpSide() {
+    const [error, setError] = useState("");
+    const [formData, setFormData] = useState({
         name: "",
         email: "",
         password: "",
-        password2: "",
+        password2: ""
     });
+
+    // for redirecting to home page on successful sign up
     const navigate = useNavigate();
 
-    const onChange = (e) => {
+    // Track changes in input boxes
+    const onChange = e => {
         const { name, value } = e.target;
-        setFormData(prevState => ({ ...prevState, [name]: value }));
-    }
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
-    const onSubmit = async (event) => {
-        event.preventDefault();
+    // Sign Up logic (You'll have to write this part or modify based on your needs)
+    const registerUser = async (formData) => {
+        // Registration logic goes here
+    };
 
-        const { name, email, password, password2 } = formData;
-        if (password !== password2) {
-            console.error("Passwords do not match");
-            return;
-        }
-
-        try {
-            const response = await fetch('/api/user/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name, email, password })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                console.log("Registration successful:", data.message);
-                navigate('/login');
-            } else {
-                console.error("Registration failed:", data.message);
-            }
-        } catch (err) {
-            console.error("An error occurred during registration:", err);
-        }
-    }
+    // Click Handler
+    const onSubmit = e => {
+        e.preventDefault();
+        registerUser(formData);
+    };
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs">
+            <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
-                <Box
+
+                {/* LeftSide component */}
+                <LeftSide />
+
+                <Grid
+                    item
+                    xs={12}
+                    sm={8}
+                    md={5}
                     sx={{
-                        marginTop: 8,
+                        backgroundColor: '#F4F4F4',
                         display: 'flex',
                         flexDirection: 'column',
+                        justifyContent: 'center',
                         alignItems: 'center',
+                        py: 3,
                     }}
                 >
-
-                    <Typography component="h1" variant="h5">
-                        Sign Up
+                    <Typography
+                        component="h1"
+                        variant="h5"
+                        mb={2}
+                        sx={{
+                            fontSize: '2rem',
+                            paddingBottom: 1
+                        }}>
+                        Sign Up 🙂
                     </Typography>
-                    <form onSubmit={onSubmit}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="name"
-                            label="Name"
-                            name="name"
-                            value={formData.name}
-                            onChange={onChange}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            type="email"
-                            autoComplete="email"
-                            value={formData.email}
-                            onChange={onChange}
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="password"
-                            label="Password"
-                            name="password"
-                            type="password"
-                            value={formData.password}
-                            onChange={onChange}
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="password2"
-                            label="Confirm Password"
-                            name="password2"
-                            type="password"
-                            value={formData.password2}
-                            onChange={onChange}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Sign Up
-                        </Button>
-                    </form>
-                </Box>
-                <Copyright />
-            </Container>
+
+                    {/* Error Message Component */}
+                    {error && <ErrorMessage message={error} />}
+
+                    {/* Sign Up Form Component */}
+                    <SignUpForm formData={formData} onChange={onChange} onSubmit={onSubmit} />
+
+                    {/* Copyright Component */}
+                    <Copyright sx={{ mt: 5 }} />
+                </Grid>
+            </Grid>
         </ThemeProvider>
     );
 }
 
-export default SignUp;
+export default SignUpSide;

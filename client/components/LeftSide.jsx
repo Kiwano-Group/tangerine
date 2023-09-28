@@ -2,6 +2,8 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TypedText from './Typed.jsx';
+import { GiOrange } from "react-icons/gi";
+import { Link } from 'react-router-dom';
 
 function LeftSide() {
     return (
@@ -24,26 +26,30 @@ function LeftSide() {
             }}
         >
             {/* Tangerine text logo */}
+
             <Typography
                 variant="h5"
                 gutterBottom
+                component={Link}
+                to="/"
                 sx={{
-                    position: 'absolute',  // Positions the logo at the top-left corner
-                    top: '3rem',
-                    left: '5rem',
-                    fontWeight: 'bold'
+                    position: 'absolute',
+                    top: '1rem',
+                    left: '2rem',
+                    textDecoration: 'none',
+                    color: 'inherit',
                 }}
             >
-                Tangerine
+                <GiOrange />Tangerine
             </Typography>
 
             <Typography
                 variant="h4"
                 gutterBottom
                 sx={{
-                    fontSize: '4rem',
-                    paddingLeft: '5rem',
-                    paddingBottom: '10rem'
+                    fontSize: '3rem',
+                    paddingLeft: '2rem',
+                    paddingBottom: '5rem'
                 }}
             >
                 {/* The text animation on the left side */}
