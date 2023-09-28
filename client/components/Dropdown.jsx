@@ -19,14 +19,14 @@ const Dropdown = () => {
 
             <div className={`dropdown-menu ${open? 'active' : 'inactive'}`}>
                 <h3>Profile</h3>
-                    <ul className="box">
-                        <DropdownItem img = {myProfile} text= {"My Profile"}/>
-                        <DropdownItem img = {editProfile} text= {"Edit Profile"}/>
-                        <DropdownItem img = {settings} text= {"Settings"}/>
-                        <DropdownItem img = {logOut} text= {"Logout"}/>
-                    </ul>
-                </div>
+                <ul className="box">
+                    <DropdownItem img = {myProfile} text= {"My Profile"}/>
+                    <DropdownItem img = {editProfile} text= {"Edit Profile"}/>
+                    <DropdownItem img = {settings} text= {"Settings"}/>
+                    <DropdownItem img = {logOut} text= {"Logout"}/>
+                </ul>
             </div>
+        </div>
 )
 }
 
