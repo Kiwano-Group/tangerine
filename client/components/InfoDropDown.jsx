@@ -1,9 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import "../dropdown.css";
-import dropdown from "../assets/dropdown.png";
-import InfoItem from "./InfoItem.jsx";
-// import cron from "node-cron";
+
 
 const formatDate = (databaseDate) => {
     const date = new Date(databaseDate);

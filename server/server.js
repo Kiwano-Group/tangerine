@@ -25,6 +25,10 @@ const User = require('./routers/userRoutes.js');
 // Routers 
 app.use('/api/user/', User)
 
+app.get("/api/filterFirstName", employeeController.filterFirstName, (req, res) => {
+    console.log(res.locals.result)
+    return res.status(200).json(res.locals.result);
+})
 
 //GET THE WHOLE TABLE
 app.get('/api/table', employeeController.getDb, (req, res) => {
@@ -91,8 +95,7 @@ app.get('/api/', (req, res) => {
 
 //unknown path handler
 app.use('/api/*', (req, res) => {
-    console.log('hey');
-    // return res.status(404).send('404 page does not exist');
+    return res.status(404).send('404 page does not exist');
 });
 
 

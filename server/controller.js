@@ -8,6 +8,18 @@ const schedule = require('node-schedule');
 
 const employeeController = {};
 
+employeeController.filterFirstName = async (req, res, next) => {
+  try {
+    const myQuery = "SELECT * FROM employees ORDER BY first_name ASC"
+    const result = await db.query(myQuery);
+    res.locals.result = result.rows;
+    return next()
+  }
+  catch( err ){
+    return next({})
+  }
+}
+
 //createing intial table
 employeeController.createDb = async (req, res, next) => {
   try {
@@ -80,6 +92,8 @@ employeeController.getDb = async (req, res, next) => {
     })
   }
 }
+
+
 
 //view parter of db by Dept
 employeeController.filterByDept = async (req, res, next) => {
