@@ -23,7 +23,6 @@ function TypedText() {
             typed.destroy();
         };
     }, []);
-
     return <span ref={el}></span>;
 }
 

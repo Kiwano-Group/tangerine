@@ -1,28 +1,39 @@
-import React, { useState } from "react";
+import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Copyright from '../components/Copyright.jsx'
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Signup() {
+const defaultTheme = createTheme();
 
-    const [error, setError] = useState(false);
-    const [formData, setFormData] = useState({
+
+function SignUp() {
+    const [formData, setFormData] = React.useState({
         name: "",
         email: "",
         password: "",
         password2: "",
     });
-
     const navigate = useNavigate();
 
-    const { name, email, password, password2 } = formData;
-
-    const onChange = e => {
+    const onChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
     }
 
-    const onSubmit = async e => {
-        e.preventDefault();
+    const onSubmit = async (event) => {
+        event.preventDefault();
 
+        const { name, email, password, password2 } = formData;
         if (password !== password2) {
             console.error("Passwords do not match");
             return;
@@ -34,19 +45,14 @@ function Signup() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    name: name,
-                    email: email,
-                    password: password
-                })
+                body: JSON.stringify({ name, email, password })
             });
 
             const data = await response.json();
 
             if (response.ok) {
                 console.log("Registration successful:", data.message);
-                navigate('/');  // Redirect to the login page after successful registration.
-
+                navigate('/login');
             } else {
                 console.error("Registration failed:", data.message);
             }
@@ -55,61 +61,82 @@ function Signup() {
         }
     }
 
-
     return (
-        <section>
-            <div className="heading">
-                <h1>
-                    Sign Up
-                </h1>
-            </div>
-            <div className="form">
-                <form onSubmit={onSubmit}>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            className="form-control"
+        <ThemeProvider theme={defaultTheme}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+
+                    <Typography component="h1" variant="h5">
+                        Sign Up
+                    </Typography>
+                    <form onSubmit={onSubmit}>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
                             id="name"
+                            label="Name"
                             name="name"
-                            value={name}
-                            placeholder="Enter your name"
+                            value={formData.name}
                             onChange={onChange}
                         />
-                        <input
-                            type="email"
-                            className="form-control"
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
                             id="email"
+                            label="Email Address"
                             name="email"
-                            value={email}
-                            placeholder="Enter your email"
+                            type="email"
+                            autoComplete="email"
+                            value={formData.email}
                             onChange={onChange}
                         />
-                        <input
-                            type="password"
-                            className="form-control"
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
                             id="password"
+                            label="Password"
                             name="password"
-                            value={password}
-                            placeholder="Enter your password"
-                            onChange={onChange}
-                        />
-                        <input
                             type="password"
-                            className="form-control"
-                            id="password2"
-                            name="password2"
-                            value={password2}
-                            placeholder="Confirm your password"
+                            value={formData.password}
                             onChange={onChange}
                         />
-                    </div>
-                    <div className="form-group">
-                        <button type="submit" className="btn btn-block">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </section>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="password2"
+                            label="Confirm Password"
+                            name="password2"
+                            type="password"
+                            value={formData.password2}
+                            onChange={onChange}
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Sign Up
+                        </Button>
+                    </form>
+                </Box>
+                <Copyright />
+            </Container>
+        </ThemeProvider>
     );
 }
 
-export default Signup;
+export default SignUp;
