@@ -156,8 +156,35 @@ const nameFilter = async () => {
             <div className="employeeDetail">Email: {employee.email}</div>
             <div className="employeeDetail">Phone Number: {employee.phone_number}</div>
             <br />
-            <button>Gettem Outta Here</button>
-            <button>Change This Person</button>
+            <div className="flex-center">
+            {employeeFormSubmitted[employee.employee_id] ? (<div className="Button">Employee offboard scheduled</div>) : (
+                <div className="dropdown">
+                    <button onClick={() => toggleDropdown(employee.employee_id)}>
+                        {employeeDropdownOpen[employee.employee_id] ? "Go Back" : "Offboard"}
+                    </button>
+                                {employeeDropdownOpen[employee.employee_id] && (
+                            <div className="dropdown-content">
+                            <form onSubmit={handleSubmit}>
+                                <ul>
+                                    <li>
+                                        <label htmlFor="end_date">Offboard Date </label>
+                                        <input type="date" id="end" name="end_date" min={currentDate} value={formData.end_date} onChange={handleFormChange} />
+                                    </li>
+                                    <li>
+                                        <label htmlFor="end_time">Offboard Time </label>
+                                        <input type="time" id="obTime" name="obTime" min="06:00" max="24:00" required value={formData.obTime} onChange={handleFormChange} />
+                                    </li>
+                                    <li>
+                                        <button type="submit" onClick={() => clickHandle(employee.employee_id)}>Confirm Offboarding</button>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+                        )}
+                    {employeeDropdownOpen[employee.employee_id] ? null: <button className="Button">Edit Info</button>}
+                </div>
+                )}
+</div>
         </Typography>
         </AccordionDetails>
           </Accordion>
