@@ -1,12 +1,14 @@
 import React from "react";
-import Header from '../components/Header.jsx';
 import OnForm from '../components/OnForm.jsx';
+import Sidebar from '../components/Sidebar.jsx';
+import Footer from '../components/Footer.jsx';
 
 const Onboarding = () => {
     return (
         <div>
-            <Header />
+            <Sidebar />
             <OnForm />
+            <Footer />
         </div>
     )
 }
