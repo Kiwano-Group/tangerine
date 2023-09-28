@@ -82,7 +82,7 @@ const Table = () => {
             setEmployeeFormSubmitted(prevEmployeeFormSubmitted => ({
                 ...prevEmployeeFormSubmitted,
                 [employeeId]: true,
-              }));
+                }));
             const res = await fetch(`/api/delete/${employeeId}`, {
                 method: 'DELETE',
                 headers: {
