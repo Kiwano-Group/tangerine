@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -7,7 +8,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Copyright from '../components/Copyright.jsx';
 import LeftSide from '../components/LeftSide.jsx';
-import SignUpForm from '../components/SignUpForm.jsx'; // Assuming you've named your sign-up form component as SignUpForm
+import SignUpForm from '../components/SignUpForm.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 
 const defaultTheme = createTheme();
@@ -18,8 +19,10 @@ function SignUpSide() {
         name: "",
         email: "",
         password: "",
-        password2: ""
+        confirmPassword: ""
     });
+
+    // Deconstruct input
 
     // for redirecting to home page on successful sign up
     const navigate = useNavigate();
@@ -33,9 +36,47 @@ function SignUpSide() {
         }));
     };
 
-    // Sign Up logic (You'll have to write this part or modify based on your needs)
     const registerUser = async (formData) => {
-        // Registration logic goes here
+
+        const { name, email, password, confirmPassword } = formData;
+
+        console.log(formData);
+
+        if (password !== confirmPassword) {
+            console.error("Passwords do not match");
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/user/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log("Registration successful:", data.message);
+                navigate('/login');
+            } else {
+                console.error("Registration failed:", data.message);
+                setError(data.message || 'An error occurred. Please try again.');
+
+            }
+        } catch (err) {
+            console.error("An error occurred during registration:", err);
+            setError('An unexpected error occurred. Please try again.');
+
+        }
+
+
     };
 
     // Click Handler
@@ -43,6 +84,7 @@ function SignUpSide() {
         e.preventDefault();
         registerUser(formData);
     };
+
 
     return (
         <ThemeProvider theme={defaultTheme}>

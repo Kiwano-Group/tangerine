@@ -1,9 +1,12 @@
 import React from 'react';
+
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import TypedText from './Typed.jsx';
+
 import { GiOrange } from "react-icons/gi";
 import { Link } from 'react-router-dom';
+
+import TypedText from './Typed.jsx';
 
 function LeftSide() {
     return (
