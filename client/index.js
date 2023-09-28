@@ -17,28 +17,32 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import Home from "./pages/Home.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 import Onboarding from "./pages/Onboarding.jsx";
 import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx"
 import Profile from "./pages/Profile.jsx";
 import Settings from "./pages/Settings.jsx";
+import Home from "./pages/Home.jsx";
 
 const router = createBrowserRouter([{
   path: "/",
+  element: <Home />
+}, {
+  path: "login",
   element: <Login />
-},
-{
-  path: "home",
-  element: <Home />,
-},
-{
-  path: "onboard",
-  element: <Onboarding />,
 },
 {
   path: "signup",
   element: <Signup />
+},
+{
+  path: "dashboard",
+  element: <Dashboard />,
+},
+{
+  path: "onboard",
+  element: <Onboarding />,
 },
 {
   path: "profile",

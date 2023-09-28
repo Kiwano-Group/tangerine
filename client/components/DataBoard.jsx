@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import Card from "./Card.jsx";
 
-const Dashboard = () => {
+const DataBoard = () => {
 
     const [totalEmployees, setTotalEmployees] = useState(0);
     const [totalFulltime, setTotalFulltime] = useState(0);
@@ -39,4 +39,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard;
+export default DataBoard;
