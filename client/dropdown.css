@@ -28,12 +28,14 @@ a {
     border-radius: 8px;
     width: auto;
     z-index: 99;
+    color: black;
     
 }
 .box{
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: black;
 }
 .dropdown-menu::before {
     content: '';

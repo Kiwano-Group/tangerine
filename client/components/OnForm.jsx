@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useForm } from "react-hook-form";
 
 const OnForm = () => {
 
@@ -37,8 +38,7 @@ const OnForm = () => {
         })
     }
 
-    const handleClick = async (e) => {
-        e.preventDefault();
+    const handleClick = async () => {
         try {
             await fetch('api/add', {
                 method: 'POST',
@@ -57,19 +57,28 @@ const OnForm = () => {
 
     }
 
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+
     return (
         <div id='form-component'>
-            <form>
+            <form onSubmit={handleSubmit((data) => {
+                handleClick();
+            })}>
                 <fieldset id='employee-info'>
                     <legend>Employee Information</legend>
                     <ul>
                         <li>
                             <label htmlFor="first_name">First Name</label>
-                            <input type="text" id="first_name" name="first_name" value={form.first_name} onChange={handleChange} Required/>
+                            <input type="text" id="first_name" name="first_name" value={form.first_name} onChange={handleChange} required pattern='[a-zA-Z]+'/>
                         </li>
                         <li>
                             <label htmlFor="last_name">Last Name</label>
-                            <input type="text" id="last_name" name="last_name" value={form.last_name} onChange={handleChange} required/>
+                            <input {...register('last_name', {required: true, pattern: /^[A-Za-z]+$/i})}
+                            type="text" id="last_name" name="last_name" value={form.last_name} onChange={handleChange} required pattern='[a-zA-Z]+'/>
                         </li>
                         <li>
                             <label htmlFor="role">Role</label>
@@ -94,32 +103,32 @@ const OnForm = () => {
                         </li>
                         <li>
                             <label htmlFor="salary">Salary</label>
-                            <input type="text" id="salary" name="salary" value={form.salary} onChange={handleChange} required/>
+                            <input type="text" id="salary" name="salary" value={form.salary} onChange={handleChange} required pattern='[0-9]+'/>
                         </li>
                         <li>
                             <label htmlFor="start">Start Date</label>
-                            <input type="date" id="start" name="start_date" value={form.start_date} min={currentDate} onChange={handleChange}/>
+                            <input type="date" id="start" name="start_date" value={form.start_date} min={currentDate} onChange={handleChange} required/>
                             {/*<input type="start" id="start" name="start_date" value={form.start_date} onChange={handleChange} />*/}
                         </li>
                         <li>
                             <label htmlFor="type">Type</label>
-                            <select id="type" name="type" value={form.type} onChange={handleChange}>
+                            <select id="type" name="type" value={form.type} onChange={handleChange} required>
                                 <option value="Full-Time">Full-Time</option>
                                 <option value="Contractor">Contractor</option>
                             </select>
                         </li>
                         <li>
                             <label htmlFor="dob">Date of Birth</label>
-                            <input type="date" id="dob" name="birthday" value={form.birthday} max={currentDate} onChange={handleChange}/>
+                            <input type="date" id="dob" name="birthday" value={form.birthday} max={currentDate} onChange={handleChange} required/>
                             {/*<input type="text" id="dob" name="birthday" value={form.birthday} onChange={handleChange} />*/}
                         </li>
                         <li>
                             <label htmlFor="phone">Phone Number</label>
-                            <input type="text" id="phone" name="phone_number" value={form.phone_number} onChange={handleChange} required/>
+                            <input type="text" id="phone" name="phone_number" value={form.phone_number} onChange={handleChange} required  pattern='[0-9]+' minLength='10' maxLength='10'/>
                         </li>
                         <li>
                             <label htmlFor="email">Email</label>
-                            <input type="text" id="email" name="email" value={form.email} onChange={handleChange} required/>
+                            <input type="text" id="email" name="email" value={form.email} onChange={handleChange} required pattern='[^@\s]+@[^@\s]+\.[^@\s]+'/>
                         </li>
                         <li>
                             <label htmlFor="services">Services</label>
@@ -155,7 +164,7 @@ const OnForm = () => {
 
                     </ul>
 
-                    <input type='submit' className='btn' id='addNew' onClick={handleClick} value="Add New Employee"></input>
+                    <input type='submit' className='btn' id='addNew' value="Add New Employee"></input>
 
                 </fieldset>
 
