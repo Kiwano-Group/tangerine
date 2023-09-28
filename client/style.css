@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cabin&family=Libre+Franklin&family=Montserrat&family=Oswald&display=swap');
 
 :root {
-    /* Color Variables */
     --primary-color: #F28500;
     --hover-color: #ffad42;
     --disabled-color: #a4a4a4;
@@ -20,7 +19,6 @@
 }
 
 body {
-    /* font-family: 'Poppins', sans-serif; */
     height: 100vh;
 }
 
@@ -47,6 +45,7 @@ li {
     margin: 10px 40px;
     text-decoration: none;
 }
+
 
 .btn:hover {
     background-color: var(--hover-color);
@@ -128,14 +127,14 @@ li {
 
 .tableHeadName {
     flex: 1;
-    background-color: #F28500; 
+    background-color: #F28500;
     color: white;
     padding: 20px;
 }
 
 .tableBody {
     height: 500px;
-    background-color:white;
+    background-color: white;
 }
 
 .Typography {
@@ -146,7 +145,7 @@ li {
 
 .employeeInfo {
     flex: 1;
-}    
+}
 
 .employeeDetail {
     margin-bottom: 10px;
@@ -341,79 +340,79 @@ li {
     }
 }
 
-  form {
+form {
     font-family: 'Libre Franklin', sans-serif;
-  }
+}
 
-  
-  form {
-    margin: auto; 
-    width: auto; 
+
+/* form {
+    margin: auto;
+    width: auto;
     max-width: 800px;
     border: 2px solid white;
-  }
+} */
 
-  fieldset {
-    display: flex; 
-    padding: 100px;  
+fieldset {
+    display: flex;
+    padding: 100px;
     padding-top: 40px;
-    padding-bottom: 40px; 
+    padding-bottom: 40px;
     flex-direction: column;
     align-items: center;
-    border: 2px solid rgb(255, 157, 0); 
-    width: 80%; 
-    max-width: 750px; 
-    margin: auto; 
-    margin-top: 1%; 
+    border: 2px solid rgb(255, 157, 0);
+    width: 100%;
+    max-width: 750px;
+    margin: auto;
+    margin-top: 1%;
     margin-bottom: 5%;
-  }
+}
 
- fieldset > legend {
+fieldset>legend {
     font-size: 1.5rem;
-    padding: 10px; 
+    padding: 10px;
 
-  }
+}
 
-  #employee-info > ul {
+#employee-info>ul {
     width: 600px;
-  }
+}
 
-  #employee-info > ul > li {
+#employee-info>ul>li {
     width: 90%;
     margin: 20px;
-    display: grid; 
-    grid-template-columns: 1fr 2fr 
+    display: grid;
+    grid-template-columns: 1fr 2fr
+}
 
-  }
-
-  #employee-info > ul > li > label {
+#employee-info>ul>li>label {
     font-size: 1rem;
     padding-right: 10px;
-  }
+}
 
-  #employee-info > ul > li > input, select {
+#employee-info>ul>li>input,
+select {
     font-size: 1rem;
     border: 2px solid #e0dfde;
     border-radius: 15px;
-    width: auto; 
+    width: auto;
     height: 32px;
-    padding: 0 10px; 
-  }
+    padding: 0 10px;
+}
 
 
- #addNew {
+#addNew {
     align-self: center;
     background: #f47d68;
     border: 4px solid rgb(255, 157, 0);
 
- }
+}
 
 
 .signup {
     display: flex;
     height: 100%;
-} 
- 
+}
+
 .quote {
     width: 70%;
     display: flex;
@@ -430,7 +429,7 @@ li {
     width: 50%;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 .innerquote {
@@ -439,6 +438,7 @@ li {
     top: -50px;
 }
 
+
 .signuptext {
     background-color: transparent;
     border: 1px solid black;
@@ -446,7 +446,7 @@ li {
     width: 200px;
     margin: 8px;
     height: 30px;
-    
+
 }
 
 .thebuttons {
@@ -456,16 +456,16 @@ li {
 }
 
 #error-message {
-    color: red; 
+    color: red;
     font-style: italic;
     font-size: .9em;
 }
 
-.checkbox-grid{
+.checkbox-grid {
     display: grid;
     grid-template-columns: 110px 110px 110px;
 }
 
-.checkbox-service{
+.checkbox-service {
     margin-right: 6px;
 }
