@@ -4,7 +4,7 @@ const Footer = () => {
   return(
     <footer className='kiwano-footer'>
         <ul className='flex-1'>
-          <li><h3>Kiwano Group</h3></li>
+          <li><h3>Kiwano Group™</h3></li>
           <li><p>Kiwano group is a non-profit organization on a mission to streamline company onboarding.</p></li>
           <br></br>
         </ul>
