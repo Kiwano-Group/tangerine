@@ -48,7 +48,7 @@ const OnForm = () => {
                 body: JSON.stringify(form)
             });
             setForm(formDefaults);
-            navigate('/home');
+            navigate('/dashboard');
         }
 
         catch (error) {
