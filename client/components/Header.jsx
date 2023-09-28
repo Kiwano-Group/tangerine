@@ -12,7 +12,7 @@ const Header = () => {
             <Button variant="contained" color="primary">
                 Hello World
             </Button>
-            <Link to="/home" className="logo">
+            <Link to="/dashboard" className="logo">
                 <div >
                     <GiOrange /> Tangerine
                 </div>

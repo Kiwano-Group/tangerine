@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import Footer from "./Footer.jsx";
-import Sidebar from "./Sidebar.jsx";
 
 const OnForm = () => {
 
@@ -50,7 +48,7 @@ const OnForm = () => {
                 body: JSON.stringify(form)
             });
             setForm(formDefaults);
-            navigate('/home');
+            navigate('/dashboard');
         }
 
         catch (error) {
@@ -67,7 +65,6 @@ const OnForm = () => {
 
     return (
         <div id='form-component'>
-            {/*<Sidebar></Sidebar>*/}
             <form onSubmit={handleSubmit((data) => {
                 handleClick();
             })}>
@@ -172,7 +169,6 @@ const OnForm = () => {
                 </fieldset>
 
             </form>
-            {/*<Footer/>*/}
         </div>
     )
 }

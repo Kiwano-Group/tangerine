@@ -2,10 +2,19 @@ import React from 'react';
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { Divider } from '@mui/material';
 
-function LoginForm({ formData, onChange, onSubmit }) {
+import googleButton from '../assets/btn_google_signin_dark_normal_web.png';
+
+function LoginForm({ formData, onChange, onSubmit, onGoogleLogin }) {
     return (
-        <form onSubmit={onSubmit} style={{ margin: '0 auto', maxWidth: '80%' }}>
+
+        <form onSubmit={onSubmit} style={{
+            margin: '0 auto',
+            maxWidth: '80%',
+            marginTop: 3
+        }}>
+
             <TextField
                 variant="outlined"
                 margin="normal"
@@ -42,7 +51,19 @@ function LoginForm({ formData, onChange, onSubmit }) {
             >
                 Login
             </Button>
-        </form>
+
+            <Divider variant='middle' sx={{
+                margin: 4,
+                my: '2'
+            }}>OR</Divider>
+
+            <Button
+                onClick={onGoogleLogin}
+                fullWidth
+            >
+                <img src={googleButton} alt="Sign in with Google" />
+            </Button>
+        </form >
     );
 }
 
