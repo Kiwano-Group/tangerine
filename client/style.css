@@ -469,3 +469,36 @@ li {
 .checkbox-service{
     margin-right: 6px;
 }
+
+.kiwano-footer{
+    
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    padding: 20px 5%;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 60px;
+    box-shadow: 0px 10px 40px -10px hsl(230, 6%, 80%);
+    color: #ffad42;
+    margin-top: 10px;
+}
+
+.kiwano-link{
+    color: #ffad42;
+    text-decoration: none;
+}
+
+.kiwano-link:hover{
+    text-decoration: underline;
+    color: #ffb34f;
+}
+
+.flex-1{
+    flex: 1;
+}
+
+.sidebar{
+    background-color: #ffad42;
+    margin: 0px;
+}
