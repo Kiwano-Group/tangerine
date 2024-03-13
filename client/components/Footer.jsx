@@ -16,8 +16,8 @@ const Footer = () => {
         </ul>
         <ul className='flex-1'>
           <li><h3>Links</h3></li>
-          <li><a href="#" class="kiwano-link">Corporate Sponsors</a></li>
-          <li><a href="#" class="kiwano-link">Terms of Service</a></li>
+          <li><a href="#" className="kiwano-link">Corporate Sponsors</a></li>
+          <li><a href="#" className="kiwano-link">Terms of Service</a></li>
 
         </ul>
     </footer>

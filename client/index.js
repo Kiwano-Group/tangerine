@@ -13,7 +13,7 @@ import Profile from "./pages/Profile.jsx";
 import Settings from "./pages/Settings.jsx";
 import Home from "./pages/Home.jsx";
 
-import { AuthProvider } from './authContext.js';
+import { AuthProvider } from './authContext.jsx';
 
 import ProtectedRoute from './protectedRoute.jsx';  // adjust the path accordingly
 

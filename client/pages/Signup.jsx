@@ -13,7 +13,7 @@ import SignUpForm from '../components/SignUpForm.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 
 // Firebase
-import { useAuth } from '../authContext.js';
+import { useAuth } from '../authContext.jsx';
 
 const defaultTheme = createTheme();
 
@@ -104,7 +104,10 @@ function Signup() {
             navigate('/login');
         } catch (err) {
             console.error('Signup error:', err);
-            setError('An unexpected error occurred. Please try again.');
+            if(password.length < 6){
+                setError('Password must be at least 6 characters');
+            }
+            else setError('An unexpected error occurred. Please try again.');
         }
     };
 

@@ -9,8 +9,11 @@ const DataBoard = () => {
     const [totalContractors, setTotalContractors] = useState(0);
 
     useEffect(() => {
-        fetch("/api/table")
-            .then(response => response.json())
+        fetch("http://localhost:3000/api/table")
+            .then(response => {
+                console.log(response);
+                return response.json()
+            })
             .then(data => {
 
                 setTotalEmployees(data.length);
@@ -24,7 +27,8 @@ const DataBoard = () => {
                     data.filter(employee =>
                         employee.type === "Contractor"
                     ).length);
-            });
+            })
+            .catch((error) => console.log("Databoard error: " + error));
     }, []);
 
     return (

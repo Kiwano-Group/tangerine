@@ -11,7 +11,7 @@ import LeftSide from '../components/LeftSide.jsx';
 import LoginForm from '../components/LoginForm.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 
-import { useAuth } from '../authContext.js';
+import { useAuth } from '../authContext.jsx';
 
 const defaultTheme = createTheme();
 

@@ -26,7 +26,7 @@ const Table = () => {
     let day = ("0" + date.getDate()).slice(-2);
     const currentDate = date.getFullYear().toString() + '-' + month + '-' + day;
     const getTableFunc = () => {
-        fetch("/api/table")
+        fetch("http://localhost:3000/api/table")
             .then(response => response.json())
             .then(fetchedData => {
                 const updatedData = fetchedData.map(employee => ({
