@@ -1,4 +1,3 @@
-const { WebClient } = require('@slack/web-api');
 const dotenv = require('dotenv').config();
 const axios = require('axios');
 
