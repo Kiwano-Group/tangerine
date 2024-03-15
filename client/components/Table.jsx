@@ -26,7 +26,7 @@ const Table = () => {
     let day = ("0" + date.getDate()).slice(-2);
     const currentDate = date.getFullYear().toString() + '-' + month + '-' + day;
     const getTableFunc = () => {
-        fetch("http://localhost:3000/api/table")
+        fetch("http://34.233.134.97:8000/api/table")
             .then(response => response.json())
             .then(fetchedData => {
                 const updatedData = fetchedData.map(employee => ({
@@ -73,7 +73,7 @@ const Table = () => {
                 ...prevEmployeeFormSubmitted,
                 [employeeId]: true,
             }));
-            const res = await fetch(`/api/delete/${employeeId}`, {
+            const res = await fetch(`http://34.233.134.97:8000/api/delete/${employeeId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ const Table = () => {
     }
     const nameFilter = async () => {
         try {
-            const res = await fetch('/api/filterFirstName')
+            const res = await fetch('http://34.233.134.97:8000/api/filterFirstName')
                 .then(res => res.json());
             setFilteredData(res);
         } catch (err) {

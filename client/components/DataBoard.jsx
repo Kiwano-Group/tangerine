@@ -9,9 +9,8 @@ const DataBoard = () => {
     const [totalContractors, setTotalContractors] = useState(0);
 
     useEffect(() => {
-        fetch("http://44.220.164.18:3000/api/table")
+        fetch("http://34.233.134.97:8000/api/table")
             .then(response => {
-                console.log(response);
                 return response.json()
             })
             .then(data => {

@@ -40,7 +40,7 @@ const OnForm = () => {
 
     const handleClick = async () => {
         try {
-            await fetch('http://localhost:3000/api/add', {
+            await fetch('http://34.233.134.97:8000/api/add', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",

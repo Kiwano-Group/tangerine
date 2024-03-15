@@ -13,7 +13,7 @@ const Info = (props) => {
 
     const clickHandle = async () => {
         try{
-            const res = await fetch(`/api/delete/${props.employee_id}`, {
+            const res = await fetch(`http://34.233.134.97:8000/api/delete/${props.employee_id}`, {
                 method: 'DELETE'
             })
             //rerenders table 
